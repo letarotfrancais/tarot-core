@@ -1,4 +1,4 @@
-import { GameInstance } from '../src/game'
+import { GameInstance } from '../dist/game'
 
 // const players = [1, 2, 3]
 
