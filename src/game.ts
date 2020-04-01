@@ -4,14 +4,14 @@ import Player from './player'
 import { Action, HistoryEntry, Contract } from './types'
 import { CONTRACTS_ORDER } from './constants'
 
-class Game {
+export default class Game {
 
   state: GameState
-  sequence: Array<Action>
-  history: Array<HistoryEntry>
+  actionsSequence: Array<Action>
+  actionsHistory: Array<HistoryEntry>
 
   constructor(state: GameState) {
-    this.sequence = [
+    this.actionsSequence = [
       Action.Deal,
       ...Array(state.players.length).fill(Action.Bid),
       Action.Discard,
@@ -73,12 +73,12 @@ class Game {
     }
   }
   exec(action: Action, payload: {}) {
-    if (this.sequence[0] === action) {
+    if (this.actionsSequence[0] === action) {
       // TODO replace incoming resources with those in this game instance
       this[action].call(this, payload) // apply action
-      this.sequence.splice(0, 1) // remove sequence entry
+      this.actionsSequence.splice(0, 1) // remove sequence action entry
       let state = GameState.copy(this.state)
-      this.history.push({ action, payload, state }) // add history entry
+      this.actionsHistory.push({ action, payload, state }) // add history entry
     }
   }
 }

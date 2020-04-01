@@ -1,5 +1,7 @@
 import GameState from './game-state'
 import Player from './player'
+import Deck from './deck'
+import Card from './card'
 
 export enum CardType {
   Suit = 'SUIT',
@@ -36,4 +38,15 @@ export interface HistoryEntry {
   action: Action
   payload: {}
   state: GameState
+}
+
+export interface GameStateData {
+  dogDealSize: number
+  dogMaxSize: number
+  handDealSize: number
+  players: Array<Player>
+  deck: Deck
+  dog: Array<Card>
+  board: Array<Card>
+  bids: Array<Bid>
 }

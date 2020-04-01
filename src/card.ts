@@ -1,4 +1,8 @@
+// @ts-ignore
+import lodash from 'lodash'
 import { CardType } from './types'
+
+const { isEqual } = lodash
 
 export default class Card {
   type: CardType
@@ -10,7 +14,7 @@ export default class Card {
     to.push(...from.splice(start, amount))
   }
   static isEqual(a: Card, b: Card): boolean {
-    return JSON.stringify(a) === JSON.stringify(b) // TODO use _.isEqual
+    return isEqual(a, b)
   }
   static sort(card1: Card, card2: Card): boolean {
     return card1.sortCriteria < card2.sortCriteria

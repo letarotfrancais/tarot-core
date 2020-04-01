@@ -4,7 +4,7 @@
     "build": "tsc",
     "build:watch": "yarn build --watch",
     "test": "node --experimental-modules --es-module-specifier-resolution=node --no-warnings ./node_modules/.bin/ava",
-    "test:watch": "yarn test --watch --es-module-specifier-resolution=node"
+    "test:watch": "yarn test --watch"
   },
   "devDependencies": {
     "ava": "^3.5.1"
