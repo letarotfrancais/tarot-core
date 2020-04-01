@@ -1,6 +1,16 @@
 {
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "build:watch": "yarn build --watch",
+    "test": "node --experimental-modules --es-module-specifier-resolution=node --no-warnings ./node_modules/.bin/ava",
+    "test:watch": "yarn test --watch --es-module-specifier-resolution=node"
+  },
+  "devDependencies": {
+    "ava": "^3.5.1"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "lodash": "^4.17.15"
   }
 }
