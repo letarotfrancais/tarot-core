@@ -1,3 +1,5 @@
+import { Contract } from './types'
+
 // HAND
 export const HAND_DEALING_DEAL_SIZE = 3
 
@@ -24,3 +26,6 @@ export const BASE_VALUE = 0.5
 
 // SCORE
 export const SCORES_BY_OUDLER_COUNT = [56, 51, 41, 36]
+
+// BIDS
+export const CONTRACTS_ORDER = [Contract.Pass, Contract.Take, Contract.Guard]

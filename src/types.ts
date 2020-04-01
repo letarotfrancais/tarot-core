@@ -2,9 +2,9 @@ import GameState from './game-state'
 import Player from './player'
 
 export enum CardType {
-  Suit = 0,
-  Trump = 1,
-  Fool = 2
+  Suit = 'SUIT',
+  Trump = 'TRUMP',
+  Fool = 'FOOL'
 }
 
 export enum SuitColor {
@@ -15,9 +15,9 @@ export enum SuitColor {
 }
 
 export enum Contract {
-  Pass = 0,
-  Take = 1,
-  Guard = 2
+  Pass = 'PASS',
+  Take = 'TAKE',
+  Guard = 'GUARD'
 }
 
 export enum Action {

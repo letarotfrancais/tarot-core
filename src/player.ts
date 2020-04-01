@@ -6,4 +6,8 @@ export default class Player {
   static isEqual(a:Player, b:Player) {
     return JSON.stringify(a) === JSON.stringify(b) // TODO use _.isEqual
   }
+  constructor() {
+    this.hand = []
+    this.tricks = []
+  }
 }

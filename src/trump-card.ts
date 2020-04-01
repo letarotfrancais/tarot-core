@@ -1,5 +1,5 @@
 import Card from './card'
-import Fool from './fool-card'
+import FoolCard from './fool-card'
 import SuitCard from './suit-card'
 import { TRUMP_OUDLERS } from './constants'
 
@@ -25,16 +25,16 @@ export default class TrumpCard extends Card {
 
     let [boardFirstCard] = board
 
-    // if the first and only card played is the Fool, this card will set the trick type
-    if (board.length === 1 && boardFirstCard instanceof Fool) {
+    // if the first and only card played is the Fool card, this card will set the trick type
+    if (board.length === 1 && boardFirstCard instanceof FoolCard) {
       return true
     }
 
     // if the board first card and this card are trump cards
-    // or if the board first card is the Fool and the 2nd one is a trump card
+    // or if the board first card is the FoolCard and the 2nd one is a trump card
     // or if hand does not contain the color of the first card of the game
     if (boardFirstCard instanceof TrumpCard
-      || (boardFirstCard instanceof Fool && board[1] instanceof TrumpCard)
+      || (boardFirstCard instanceof FoolCard && board[1] instanceof TrumpCard)
       || !hand.some(card => {
         return card instanceof SuitCard  && boardFirstCard instanceof SuitCard && card.color === boardFirstCard.color
       })) {

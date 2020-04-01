@@ -2,6 +2,7 @@ import Player from './player'
 import Card from './card'
 import Deck from './deck'
 import { Bid } from './types'
+import { CONTRACTS_ORDER } from './constants'
 
 export default class GameState {
   dogDealSize: number
@@ -18,7 +19,7 @@ export default class GameState {
     return players[players.indexOf(currentPlayer) + 1]
   }
   get taker(): Player {
-    let { player } = this.bids.sort((a, b) => b.contract - a.contract )[0]
+    let { player } = this.bids.sort((a, b) => CONTRACTS_ORDER.indexOf(b.contract) - CONTRACTS_ORDER.indexOf(a.contract) )[0]
     return player
   }
   static copy(state: GameState) {

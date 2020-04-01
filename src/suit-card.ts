@@ -1,6 +1,6 @@
 import Card from './card'
 import TrumpCard from './trump-card'
-import Fool from './fool-card'
+import FoolCard from './fool-card'
 import { SuitColor } from './types'
 
 export default class SuitCard extends Card {
@@ -27,8 +27,8 @@ export default class SuitCard extends Card {
       return true
     }
 
-    // if the first and only card played is the Fool, this card will set the trick type and color
-    if (board.length === 1 && boardFirstCard instanceof Fool) {
+    // if the first and only card played is the Fool card, this card will set the trick type and color
+    if (board.length === 1 && boardFirstCard instanceof FoolCard) {
       return true
     }
 

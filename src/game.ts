@@ -1,7 +1,8 @@
 import Card from './card'
 import GameState from './game-state'
-import { Action, HistoryEntry, Contract } from './types'
 import Player from './player'
+import { Action, HistoryEntry, Contract } from './types'
+import { CONTRACTS_ORDER } from './constants'
 
 class Game {
 
@@ -30,8 +31,8 @@ class Game {
   bid({ player, contract }: { player: Player, contract: Contract }) {
     let { currentPlayer, nextPlayer, bids } = this.state
     if (Player.isEqual(player, currentPlayer)) { // TODO turn this test into a decorator
-      let highestBidContract = Math.max(...bids.map(({ contract }) => contract))
-      if (contract === Contract.Pass || contract > highestBidContract) {
+      let highestBidContract = Math.max(...bids.map(({ contract }) => CONTRACTS_ORDER.indexOf(contract)))
+      if (contract === Contract.Pass || CONTRACTS_ORDER.indexOf(contract) > highestBidContract) {
         bids.push({ player, contract })
         currentPlayer = nextPlayer
       }

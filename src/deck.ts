@@ -1,5 +1,5 @@
 import Card from './card'
-import Fool from './fool-card'
+import FoolCard from './fool-card'
 import TrumpCard from './trump-card'
 import SuitCard from './suit-card'
 // TODO reimplement shuffle
@@ -17,7 +17,7 @@ export default class Deck extends Array<Card> {
     super()
 
     // Fool
-    this.push(new Fool())
+    this.push(new FoolCard())
     // Trump cards
     for (let index = 1; index <= 21; index++) {
       let value = BASE_VALUE
