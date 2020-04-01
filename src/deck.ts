@@ -1,12 +1,7 @@
-// @ts-ignore
-import lodash from 'lodash'
-
 import Card from './card'
 import FoolCard from './fool-card'
 import TrumpCard from './trump-card'
 import SuitCard from './suit-card'
-
-const { shuffle } = lodash
 
 import {
   TRUMP_OUDLERS,
@@ -16,8 +11,8 @@ import {
 import { SuitColor } from './types'
 
 export default class Deck extends Array<Card> {
-  constructor() {
-    super()
+  constructor(...args: Array<Card>) {
+    super(...args)
 
     // Fool
     this.push(new FoolCard())
@@ -51,8 +46,5 @@ export default class Deck extends Array<Card> {
         ))
       }
     })
-  }
-  shuffle(): Array<Card> {
-    return shuffle(this)
   }
 }

@@ -9,7 +9,7 @@ test('contructor', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [],
+    players: [new Player('A')],
     deck: new Deck(),
     dog: [],
     board: [],
@@ -30,8 +30,8 @@ test('contructor', async t => {
 })
 
 test('next player', async t => {
-  let playerA = new Player()
-  let playerB = new Player()
+  let playerA = new Player('A')
+  let playerB = new Player('B')
   let gameStateData = {
     dogDealSize: 1,
     dogMaxSize: 6,
@@ -49,8 +49,8 @@ test('next player', async t => {
 })
 
 test('taker', async t => {
-  let playerA = new Player()
-  let playerB = new Player()
+  let playerA = new Player('A')
+  let playerB = new Player('B')
   let gameStateData = {
     dogDealSize: 1,
     dogMaxSize: 6,
@@ -82,4 +82,19 @@ test('copy', async t => {
   t.false(gameStateA === gameStateB, 'game states A and B should not be the same object')
   t.false(gameStateA.players === gameStateB.players, 'game states  A and B properties should not be the same objects')
   t.deepEqual(gameStateA, gameStateB, 'game states A and B should be (deeply) equals')
+})
+
+test('make from config', async t => {
+  let config = {
+    dogDealSize: 1,
+    dogMaxSize: 6,
+    handDealSize: 3,
+    players: [],
+  }
+  let gameState = GameState.makeFromConfig(config)
+
+  t.true(gameState.deck instanceof Deck, 'game state should have deck')
+  t.true(gameState.dog instanceof Array, 'game state should have dog')
+  t.true(gameState.board instanceof Array, 'game state should have board')
+  t.true(gameState.bids instanceof Array, 'game state should have bids')
 })

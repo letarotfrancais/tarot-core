@@ -23,30 +23,34 @@ export enum Contract {
 }
 
 export enum Action {
+  Shuffle = 'shuffle',
   Deal = 'deal',
   Bid = 'bid',
   Discard = 'discard',
   Play = 'play'
 }
 
-export interface Bid {
+export interface IBid {
   player: Player
   contract: Contract
 }
 
-export interface HistoryEntry {
+export interface IHistoryEntry {
   action: Action
   payload: {}
   state: GameState
 }
 
-export interface GameStateData {
+export interface IGameConfig {
   dogDealSize: number
   dogMaxSize: number
   handDealSize: number
   players: Array<Player>
+}
+
+export interface IGameState extends IGameConfig {
   deck: Deck
   dog: Array<Card>
   board: Array<Card>
-  bids: Array<Bid>
+  bids: Array<IBid>
 }
