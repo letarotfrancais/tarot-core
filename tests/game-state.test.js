@@ -3,6 +3,7 @@ import GameState from '../dist/game-state.js'
 import Deck from '../dist/deck.js'
 import Player from '../dist/player.js'
 import { Contract } from '../dist/types.js'
+import Board from '../dist/board.js'
 
 test('contructor', async t => {
   let gameStateData = {
@@ -23,7 +24,7 @@ test('contructor', async t => {
   t.truthy(gameState.players instanceof Array)
   t.truthy(gameState.deck instanceof Deck)
   t.truthy(gameState.dog instanceof Array)
-  t.truthy(gameState.board instanceof Array)
+  t.truthy(gameState.board instanceof Board)
   t.truthy(gameState.bids instanceof Array)
 
   t.is(gameState.currentPlayer, gameState.players[0], 'current player should be first players from players list')

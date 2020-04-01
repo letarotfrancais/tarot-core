@@ -13,7 +13,7 @@ export default class TrumpCard extends Card {
   get sortCriteria() {
     return `${super.sortCriteria}${this.index}`
   }
-  isPlayable(board: Array<Card>, hand: Array<Card>) {
+  isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
     super.isPlayable(board, hand)
 
     let { index: boardMaxIndex } = board.length ? board.reduce((prev, current) => prev.index > current.index ? prev : current) : { index: 0 }

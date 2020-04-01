@@ -6,18 +6,20 @@ import Player from './player'
 import { Action, IHistoryEntry, IGameConfig, Contract } from './types'
 import { CONTRACTS_ORDER } from './constants'
 
-const { shuffle } = lodash
+const { shuffle, isEqual } = lodash
 
 export default class Game {
 
   state: GameState
   actionsSequence: Array<Action>
   actionsHistory: Array<IHistoryEntry>
+  boardCardsPlayersMap: Array<{ card: Card, player: Player }> // TODO find a way to ditch it
 
   constructor(config: IGameConfig) {
     this.state = GameState.makeFromConfig(config)
     this.actionsSequence = [Action.Shuffle, Action.Deal]
     this.actionsHistory = []
+    this.boardCardsPlayersMap = []
   }
 
   exec(action: Action, payload?: {}) {
@@ -33,8 +35,7 @@ export default class Game {
   }
   start() {
     this.exec(Action.Shuffle)
-    this.exec(Action.Deal)
-    // we need to deal to hands before we can compute the number of Play actions
+    this.exec(Action.Deal) // we need to deal to hands before we can compute the number of Play actions
     this.actionsSequence.push(
       ...Array(this.state.players.length).fill(Action.Bid),
       Action.Discard,
@@ -44,7 +45,7 @@ export default class Game {
 
   // ACTIONS
   shuffle() {
-    this.state.deck = shuffle(this.state.deck) // TODO deck is not a Deck instance anymore, move its constructor a game method and remove Deck
+    // this.state.deck = shuffle(this.state.deck) // TODO deck is not a Deck instance anymore, move its constructor a game method and remove Deck
   }
   deal() {
     let { deck, dog, players, dogMaxSize, dogDealSize, handDealSize } = this.state
@@ -66,6 +67,11 @@ export default class Game {
         if (nextPlayer) { // TODO turn this into a decorator
           this.state.currentPlayer = nextPlayer
         } else {
+          let { player : taker } = this.state.bids.reduce((prev, curr) => { // TODO do not include in above decorator
+            if (!prev) return curr
+            return CONTRACTS_ORDER.indexOf(prev.contract) > CONTRACTS_ORDER.indexOf(prev.contract) ? prev : curr
+          }, undefined)
+          this.state.taker = taker
           this.state.currentPlayer = players[0]
         }
       }
@@ -84,11 +90,6 @@ export default class Game {
           Card.transfer(state.taker.hand, state.taker.tricks, 1, cardIndexInHand)
         })
       } else {
-        console.log('CARDs NUMBER', cards.length);
-        console.log('CARDS OWNERSHIP', cards.every(card => state.taker.hand.includes(card)));
-        console.log('HAND', state.taker);
-
-
         throw new GameError('discard conditions are not met (check number of cards, cards ownership)')
       }
     } else {
@@ -99,17 +100,22 @@ export default class Game {
     let { currentPlayer, nextPlayer, board, players } = this.state
     if (Player.isEqual(player, currentPlayer)) {
       let { hand } = currentPlayer
-      if (true) { // TODO remove
-      // if (hand.includes(card) && card.isPlayable(hand, board)) {
+      if (card.isPlayable(board, hand)) {
         let cardIndexInHand = hand.findIndex(handCard => Card.isEqual(card, handCard))
         Card.transfer(hand, board, 1, cardIndexInHand)
+        this.boardCardsPlayersMap.push({ card, player: currentPlayer })
+      } else {
+        throw new GameError('this card is not playable')
       }
       if (nextPlayer) {  // TODO turn this into a decorator
         this.state.currentPlayer = nextPlayer
       } else {
-        let winner = currentPlayer // TODO chose actual winner (do not include in above decorator)
+        let { bestCard } = this.state.board
+        let { player: winner } = this.boardCardsPlayersMap.find(({ card }) => isEqual(card, bestCard)) // TODO chose actual winner (do not include in above decorator)
+
         Card.transfer(board, winner.tricks, board.length)
         this.state.currentPlayer == players[0]
+        this.boardCardsPlayersMap = []
       }
     } else {
       throw new GameError('this player is not expected to perform this action')

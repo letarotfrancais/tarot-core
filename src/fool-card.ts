@@ -6,7 +6,7 @@ export default class FoolCard extends Card {
     super(FOOL_INDEX, OUDLER_VALUE, FOOL_NAME)
     this.isOudler = true
   }
-  isPlayable(board: Array<Card>, hand: Array<Card>) {
+  isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
     super.isPlayable(board, hand)
 
     return true

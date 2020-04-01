@@ -28,10 +28,12 @@ export default class Card {
   get sortCriteria() {
     return `${this.type}`
   }
-  isPlayable(board: Array<Card>, hand: Array<Card>) {
+  isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
     if (!hand.includes(this)) {
       throw new CardError('provided hand does not contain this card')
     }
+
+    return false
   }
 }
 

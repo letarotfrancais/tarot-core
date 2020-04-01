@@ -67,12 +67,11 @@ test('start', async t => {
 })
 
 test('full game', async t => {
-  let players = [new Player('A'), new Player('B'), new Player('C')]
   let config = {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players
+    players: [new Player('A'), new Player('B'), new Player('C')]
   }
   let game = new Game(config)
 
@@ -80,17 +79,13 @@ test('full game', async t => {
   game.start()
 
   // BID
-  let bid0 = { player: players[0], contract: Contract.Pass }
-  game.exec('bid', bid0)
-  t.deepEqual(game.state.bids[0], bid0)
-
-  let bid1 = { player: players[1], contract: Contract.Take }
-  game.exec('bid', bid1)
-  t.deepEqual(game.state.bids[1], bid1)
-
-  let bid2 = { player: players[2], contract: Contract.Guard }
-  game.exec('bid', bid2)
-  t.deepEqual(game.state.bids[2], bid2)
+  let playersContracts = [Contract.Pass, Contract.Take, Contract.Guard]
+  game.state.players.forEach((player, index) => {
+    game.exec('bid', { player, contract: playersContracts[index] })
+    let bid = game.state.bids[index]
+    t.is(bid.player.id, player.id)
+    t.is(bid.contract, playersContracts[index])
+  })
 
   t.true(Player.isEqual(game.state.taker, game.state.players[2]), 'taker should be player C')
   t.is(game.state.players[2].hand.length, 24, 'player C should still have 24 cards in their hand before discarding')
@@ -110,6 +105,12 @@ test('full game', async t => {
   game.state.players.forEach(player => {
     game.exec('play', { player, card: player.hand[0] })
   })
+
+  t.is(game.state.players[1].tricks.length, 3, 'player B should have won the trick')
+  game.state.players.forEach(player => {
+    console.log('PLAYER', player.id, player.tricks);
+  })
+
 })
 
 // TODO test history

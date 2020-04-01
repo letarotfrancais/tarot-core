@@ -12,7 +12,7 @@ export default class SuitCard extends Card {
   get sortCriteria() {
     return `${super.sortCriteria}${this.color}${this.index}`
   }
-  isPlayable(board: Array<Card>, hand: Array<Card>) {
+  isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
     super.isPlayable(board, hand)
 
     // if this is the first  card to be played
