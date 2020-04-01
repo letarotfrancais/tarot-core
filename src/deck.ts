@@ -1,9 +1,12 @@
+// @ts-ignore
+import lodash from 'lodash'
+
 import Card from './card'
 import FoolCard from './fool-card'
 import TrumpCard from './trump-card'
 import SuitCard from './suit-card'
-// TODO reimplement shuffle
-// import { shuffle } from './utils'
+
+const { shuffle } = lodash
 
 import {
   TRUMP_OUDLERS,
@@ -49,7 +52,7 @@ export default class Deck extends Array<Card> {
       }
     })
   }
-  // shuffle() {
-  //   shuffle([...this], CardCollection.compare).forEach((card, index) => this[index] = card)
-  // }
+  shuffle(): Array<Card> {
+    return shuffle(this)
+  }
 }
