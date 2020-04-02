@@ -1,7 +1,6 @@
 import test from 'ava'
 import Game from '../dist/game.js'
 import Player from '../dist/player'
-import Deck from '../dist/deck'
 import { Action, Contract } from '../dist/types.js'
 
 test('constructor', async t => {
@@ -45,6 +44,7 @@ test('deal', async t => {
   game.exec('deal')
 
   t.is(game.state.deck.length, 0, 'game deck should be empty')
+
   t.true(game.state.players.every(player => player.hand.length === 24), 'each player should have 24 cards in their hands')
   t.is(game.state.dog.length, 6, 'dog should contain 6 cards')
   t.is(game.actionsSequence.length, 0, 'there should not be a next action')
@@ -75,6 +75,9 @@ test('full game', async t => {
   }
   let game = new Game(config)
 
+  // game shuffle method stub
+  game.shuffle = () => {}
+
   // START: SHUFFLE & DEAL
   game.start()
 
@@ -88,7 +91,7 @@ test('full game', async t => {
   })
 
   t.true(Player.isEqual(game.state.taker, game.state.players[2]), 'taker should be player C')
-  t.is(game.state.players[2].hand.length, 24, 'player C should still have 24 cards in their hand before discarding')
+  t.is(game.state.players[2].hand.length, 30, 'player C should still have 30 cards in their hand before discarding')
   t.true(Player.isEqual(game.state.currentPlayer, game.state.players[0]), 'current player should be reset to player A')
   t.is(game.actionsSequence[0], Action.Discard, 'next action should be discard')
 
@@ -97,19 +100,30 @@ test('full game', async t => {
   let cardsToDiscard = taker.hand.slice(0, 6)
 
   game.exec('discard', { player: taker, cards: cardsToDiscard })
-  t.is(taker.hand.length, 18, 'player C should still have 24 cards in their hand after discarding')
+  t.is(taker.hand.length, 24, 'player C should still have 24 cards in their hand after discarding')
   t.is(taker.tricks.length, 6, 'player C should have 6 cards in their tricks')
   t.is(game.actionsSequence[0], Action.Play, 'next action should be play')
 
   // PLAY
   game.state.players.forEach(player => {
-    game.exec('play', { player, card: player.hand[0] })
+    let [card] = player.hand.getPlayableCards(game.state.board)
+    game.exec('play', { player, card })
   })
 
-  t.is(game.state.players[1].tricks.length, 3, 'player B should have won the trick')
-  game.state.players.forEach(player => {
-    console.log('PLAYER', player.id, player.tricks);
-  })
+  t.is(game.state.players[2].tricks.length, 6 + 3, 'player C should have won the trick')
+
+  while (game.state.currentPlayer.hand.length) {
+    console.log('-------- TRICK ----------');
+    game.state.players.forEach(player => {
+      let [card] = player.hand.getPlayableCards(game.state.board)
+      game.exec('play', { player, card })
+      console.log(`Player ${player.id} played`, card);
+    })
+  }
+
+  t.pass()
+
+  // game.actionsHistory.forEach(actionHistory => console.log(actionHistory));
 
 })
 

@@ -1,9 +1,10 @@
 // @ts-ignore
 import Card from './card'
+import Hand from './hand'
 
 export default class Player {
   id: string
-  hand: Array<Card>
+  hand: Hand
   tricks: Array<Card>
   static isEqual(a:Player, b:Player) {
     return a.id === b.id
@@ -13,7 +14,7 @@ export default class Player {
       throw new PlayerError('player should have an id')
     }
     this.id = id
-    this.hand = []
+    this.hand = new Hand()
     this.tricks = []
   }
 }

@@ -13,7 +13,7 @@ test('contructor', async t => {
     players: [new Player('A')],
     deck: new Deck(),
     dog: [],
-    board: [],
+    board: new Board(),
     bids: []
   }
   let gameState = new GameState(gameStateData)
@@ -40,7 +40,7 @@ test('next player', async t => {
     players: [playerA, playerB],
     deck: new Deck(),
     dog: [],
-    board: [],
+    board: new Board(),
     bids: []
   }
   let gameState = new GameState(gameStateData)
@@ -49,32 +49,32 @@ test('next player', async t => {
   t.deepEqual(gameState.nextPlayer, playerB, 'next player should be player B')
 })
 
-test('taker', async t => {
-  let playerA = new Player('A')
-  let playerB = new Player('B')
-  let gameStateData = {
-    dogDealSize: 1,
-    dogMaxSize: 6,
-    handDealSize: 3,
-    players: [],
-    deck: new Deck(),
-    dog: [],
-    board: [],
-    bids: [
-      {
-        player: playerA,
-        contract: Contract.Pass
-      },
-      {
-        player: playerB,
-        contract: Contract.Take
-      }
-    ]
-  }
-  let gameState = new GameState(gameStateData)
+// test('taker', async t => { // taker logic implemented directly in the game logic (see bid action)
+//   let playerA = new Player('A')
+//   let playerB = new Player('B')
+//   let gameStateData = {
+//     dogDealSize: 1,
+//     dogMaxSize: 6,
+//     handDealSize: 3,
+//     players: [playerA, playerB],
+//     deck: new Deck(),
+//     dog: [],
+//     board: new Board(),
+//     bids: [
+//       {
+//         player: playerA,
+//         contract: Contract.Pass
+//       },
+//       {
+//         player: playerB,
+//         contract: Contract.Take
+//       }
+//     ]
+//   }
+//   let gameState = new GameState(gameStateData)
 
-  t.deepEqual(gameState.taker, playerB, 'taker should be player B')
-})
+//   t.deepEqual(gameState.getTaker, playerB, 'taker should be player B')
+// })
 
 test('copy', async t => {
   let gameStateA = new GameState({ players: [] })
