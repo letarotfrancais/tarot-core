@@ -26,8 +26,8 @@ export default class GameState {
     return players[players.indexOf(currentPlayer) + 1]
   }
   constructor(gameStateData: IGameState) {
-    Object.assign(this, gameStateData)
-    this.currentPlayer = this.players[0]
+    assign(this, gameStateData)
+    this.currentPlayer = this.players.first
   }
   static copy(state: GameState) {
     let gameState = cloneDeep(state)

@@ -44,7 +44,6 @@ test('deal', async t => {
   game.exec('deal')
 
   t.is(game.state.deck.length, 0, 'game deck should be empty')
-
   t.true(game.state.players.every(player => player.hand.length === 24), 'each player should have 24 cards in their hands')
   t.is(game.state.dog.length, 6, 'dog should contain 6 cards')
   t.is(game.actionsSequence.length, 0, 'there should not be a next action')
@@ -112,9 +111,6 @@ test('full game', async t => {
     game.exec('play', { player, card })
   })
 
-
-  console.log('YOYOYOYOYOY', game.state.players);
-
   t.is(game.state.players.findId('C').tricks.length, 6 + 3, 'player C should have won the trick')
 
   while (game.state.currentPlayer.hand.length) {
@@ -128,7 +124,7 @@ test('full game', async t => {
 
   t.pass()
 
-  // game.actionsHistory.forEach(actionHistory => console.log(actionHistory));
+  game.actionsHistory.forEach(actionHistory => console.log(actionHistory));
 
 })
 
