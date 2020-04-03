@@ -45,7 +45,7 @@ export interface IGameConfig {
   dogDealSize: number
   dogMaxSize: number
   handDealSize: number
-  players: Array<Player>
+  players: Array<string>
 }
 
 export interface IGameState extends IGameConfig {

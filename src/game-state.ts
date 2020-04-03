@@ -39,7 +39,7 @@ export default class GameState {
       dog: [],
       board: new Board(),
       bids: [],
-      players: new Players(...config.players)
+      players: new Players(...config.players.map(id => new Player(id)))
     })
     return new GameState(state)
   }

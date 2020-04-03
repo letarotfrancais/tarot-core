@@ -8,7 +8,7 @@ test('constructor', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [new Player('A'), new Player('B'), new Player('C')]
+    players: ['A', 'B', 'C']
   }
   let game = new Game(config)
 
@@ -21,7 +21,7 @@ test('shuffle', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [new Player('A'), new Player('B'), new Player('C')]
+    players: ['A', 'B', 'C']
   }
   let game = new Game(config)
 
@@ -36,7 +36,7 @@ test('deal', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [new Player('A'), new Player('B'), new Player('C')]
+    players: ['A', 'B', 'C']
   }
   let game = new Game(config)
 
@@ -54,7 +54,7 @@ test('start', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [new Player('A'), new Player('B'), new Player('C')]
+    players: ['A', 'B', 'C']
   }
   let game = new Game(config)
 
@@ -70,7 +70,7 @@ test('full game', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [new Player('A'), new Player('B'), new Player('C')]
+    players: ['A', 'B', 'C']
   }
   let game = new Game(config)
 
