@@ -40,13 +40,13 @@ export default class Game {
     this.actionsSequence.push(
       ...Array(this.state.players.length).fill(Action.Bid),
       Action.Discard,
-      ...Array(this.state.players.length * this.state.players[0].hand.length).fill(Action.Play)
+      ...Array(this.state.players.length * this.state.players.first.hand.length).fill(Action.Play)
     )
   }
 
   // ACTIONS
   shuffle() {
-    // this.state.deck = shuffle(this.state.deck) // TODO deck is not a Deck instance anymore, move its constructor a game method and remove Deck
+    this.state.deck = shuffle(this.state.deck) // TODO deck is not a Deck instance anymore, move its constructor a game method and remove Deck
   }
   deal() {
     let { deck, dog, players, dogMaxSize, dogDealSize, handDealSize } = this.state
@@ -75,7 +75,7 @@ export default class Game {
 
           this.state.taker = taker
           Card.transfer(dog, taker.hand, dog.length)
-          this.state.currentPlayer = players[0]
+          this.state.currentPlayer = players.first
         }
       }
     } else {
@@ -115,9 +115,12 @@ export default class Game {
       } else {
         let { bestCard } = this.state.board // TODO do not include in decorator
         let { player: winner } = this.boardCardsPlayersMap.find(({ card }) => isEqual(card, bestCard))
+        console.log('TRICK WINNER IS', winner.id);
+
         Card.transfer(board, winner.tricks, board.length)
         this.boardCardsPlayersMap = []
-        this.state.currentPlayer = players[0]
+        players.first = winner
+        this.state.currentPlayer = players.first
       }
     } else {
       throw new GameError('this player is not expected to perform this action')

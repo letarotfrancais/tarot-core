@@ -90,9 +90,9 @@ test('full game', async t => {
     t.is(bid.contract, playersContracts[index])
   })
 
-  t.true(Player.isEqual(game.state.taker, game.state.players[2]), 'taker should be player C')
-  t.is(game.state.players[2].hand.length, 30, 'player C should still have 30 cards in their hand before discarding')
-  t.true(Player.isEqual(game.state.currentPlayer, game.state.players[0]), 'current player should be reset to player A')
+  t.true(Player.isEqual(game.state.taker, game.state.players.findId('C')), 'taker should be player C')
+  t.is(game.state.players.findId('C').hand.length, 30, 'player C should still have 30 cards in their hand before discarding')
+  t.true(Player.isEqual(game.state.currentPlayer, game.state.players.findId('A')), 'current player should be reset to player A')
   t.is(game.actionsSequence[0], Action.Discard, 'next action should be discard')
 
   // DISCARD
@@ -105,19 +105,24 @@ test('full game', async t => {
   t.is(game.actionsSequence[0], Action.Play, 'next action should be play')
 
   // PLAY
+  console.log('\n -------- TRICK ----------');
   game.state.players.forEach(player => {
     let [card] = player.hand.getPlayableCards(game.state.board)
+    console.log(`Player ${player.id} played`, card);
     game.exec('play', { player, card })
   })
 
-  t.is(game.state.players[2].tricks.length, 6 + 3, 'player C should have won the trick')
+
+  console.log('YOYOYOYOYOY', game.state.players);
+
+  t.is(game.state.players.findId('C').tricks.length, 6 + 3, 'player C should have won the trick')
 
   while (game.state.currentPlayer.hand.length) {
-    console.log('-------- TRICK ----------');
+    console.log('\n-------- TRICK ----------');
     game.state.players.forEach(player => {
       let [card] = player.hand.getPlayableCards(game.state.board)
-      game.exec('play', { player, card })
       console.log(`Player ${player.id} played`, card);
+      game.exec('play', { player, card })
     })
   }
 

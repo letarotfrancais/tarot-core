@@ -1,8 +1,8 @@
 import test from 'ava'
 import GameState from '../dist/game-state.js'
 import Deck from '../dist/deck.js'
+import Players from '../dist/players.js'
 import Player from '../dist/player.js'
-import { Contract } from '../dist/types.js'
 import Board from '../dist/board.js'
 
 test('contructor', async t => {
@@ -10,7 +10,7 @@ test('contructor', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [new Player('A')],
+    players: new Players(new Player('A')),
     deck: new Deck(),
     dog: [],
     board: new Board(),
@@ -37,7 +37,7 @@ test('next player', async t => {
     dogDealSize: 1,
     dogMaxSize: 6,
     handDealSize: 3,
-    players: [playerA, playerB],
+    players: new Players(playerA, playerB),
     deck: new Deck(),
     dog: [],
     board: new Board(),
@@ -56,7 +56,7 @@ test('next player', async t => {
 //     dogDealSize: 1,
 //     dogMaxSize: 6,
 //     handDealSize: 3,
-//     players: [playerA, playerB],
+//     players: new Players(playerA, playerB),
 //     deck: new Deck(),
 //     dog: [],
 //     board: new Board(),
@@ -98,4 +98,5 @@ test('make from config', async t => {
   t.true(gameState.dog instanceof Array, 'game state should have dog')
   t.true(gameState.board instanceof Array, 'game state should have board')
   t.true(gameState.bids instanceof Array, 'game state should have bids')
+  t.true(gameState.players instanceof Players, 'game state should have players')
 })

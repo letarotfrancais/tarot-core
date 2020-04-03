@@ -5,6 +5,7 @@ import Card from './card'
 import Deck from './deck'
 import { IBid, IGameConfig, IGameState } from './types'
 import Board from './board'
+import Players from './players'
 
 const { cloneDeep, assign } = lodash
 
@@ -12,7 +13,7 @@ export default class GameState {
   dogDealSize: number
   dogMaxSize: number
   handDealSize: number
-  players: Array<Player>
+  players: Players
   deck: Deck
   dog: Array<Card>
   board: Board
@@ -37,7 +38,8 @@ export default class GameState {
       deck: new Deck(),
       dog: [],
       board: new Board(),
-      bids: []
+      bids: [],
+      players: new Players(...config.players)
     })
     return new GameState(state)
   }
