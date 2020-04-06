@@ -3,7 +3,7 @@ import Player from './player'
 import Deck from './deck'
 import Card from './card'
 
-export enum CardType {
+export enum CardType { // TODO delete if not used
   Suit = 'SUIT',
   Trump = 'TRUMP',
   Fool = 'FOOL'

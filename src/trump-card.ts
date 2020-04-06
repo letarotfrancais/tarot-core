@@ -6,11 +6,12 @@ import { TRUMP_OUDLERS } from './constants'
 export default class TrumpCard extends Card {
   constructor(index, value) {
     super(index, value, `${index}`)
+    this.id = `TRUMP_${index}` // TODO maybe this.type might be useful for building the id
     if (TRUMP_OUDLERS.includes(index)) {
       this.isOudler = true
     }
   }
-  get sortCriteria() {
+  get sortCriteria() { // TODO delete if not used
     return `${super.sortCriteria}${this.index}`
   }
   isPlayable(board: Array<Card>, hand: Array<Card>): boolean {

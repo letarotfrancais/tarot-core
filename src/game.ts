@@ -84,46 +84,52 @@ export default class Game {
   }
   discard({ player, cards }: { player: Player, cards: Array<Card> }) {
     let { state } = this
-    if (Player.isEqual(player, state.taker)) { // TODO turn this test into a decorator
-      if (
-        cards.length === state.dogMaxSize
-        && cards.every(card => state.taker.hand.includes(card))) {
-        cards.forEach(card => {
-          let cardIndexInHand = state.taker.hand.findIndex(handCard => Card.isEqual(card, handCard))
-          Card.transfer(state.taker.hand, state.taker.tricks, 1, cardIndexInHand)
-        })
-      } else {
-        throw new GameError('discard conditions are not met (check number of cards, cards ownership)')
-      }
-    } else {
+    if (!Player.isEqual(player, state.taker)) { // TODO turn this test into a decorator
       throw new GameError('this player is not expected to perform this action')
     }
+
+    if (cards.length !== state.dogMaxSize) {
+      throw new GameError('discard refused, check number of cards')
+    }
+
+    if (!cards.every(card => state.taker.hand.some(c => Card.isEqual(c, card)))) {
+      throw new GameError('discard refused, check cards ownership')
+    }
+
+    cards.forEach(card => {
+      let cardIndexInHand = state.taker.hand.findIndex(handCard => Card.isEqual(card, handCard))
+      Card.transfer(state.taker.hand, state.taker.tricks, 1, cardIndexInHand)
+    })
   }
   play({ player, card }: { player: Player, card: Card }) {
     let { currentPlayer, nextPlayer, board, players } = this.state
-    if (Player.isEqual(player, currentPlayer)) {
-      let { hand } = currentPlayer
-      if (card.isPlayable(board, hand)) {
-        let cardIndexInHand = hand.findIndex(handCard => Card.isEqual(card, handCard))
-        Card.transfer(hand, board, 1, cardIndexInHand)
-        this.boardCardsPlayersMap.push({ card, player: currentPlayer })
-      } else {
-        throw new GameError('this card is not playable')
-      }
-      if (nextPlayer) {  // TODO turn this into a decorator
-        this.state.currentPlayer = nextPlayer
-      } else {
-        let { bestCard } = this.state.board // TODO do not include in decorator
-        let { player: winner } = this.boardCardsPlayersMap.find(({ card }) => isEqual(card, bestCard))
-        console.log('TRICK WINNER IS', winner.id);
 
-        Card.transfer(board, winner.tricks, board.length)
-        this.boardCardsPlayersMap = []
-        players.first = winner
-        this.state.currentPlayer = players.first
-      }
-    } else {
+    if (!Player.isEqual(player, currentPlayer)) {
       throw new GameError('this player is not expected to perform this action')
+    }
+
+    let { hand } = currentPlayer
+    card = hand.find(c => Card.isEqual(c, card))
+
+    if (!card.isPlayable(board, hand)) {
+      throw new GameError('this card is not playable')
+    }
+
+    let cardIndexInHand = hand.findIndex(handCard => Card.isEqual(card, handCard))
+    Card.transfer(hand, board, 1, cardIndexInHand)
+    this.boardCardsPlayersMap.push({ card, player: currentPlayer })
+
+    if (nextPlayer) {  // TODO turn this into a decorator
+      this.state.currentPlayer = nextPlayer
+    } else {
+      let { bestCard } = this.state.board // TODO do not include in decorator
+      let { player: winner } = this.boardCardsPlayersMap.find(({ card }) => isEqual(card, bestCard))
+      console.log('TRICK WINNER IS', winner.id);
+
+      Card.transfer(board, winner.tricks, board.length)
+      this.boardCardsPlayersMap = []
+      players.first = winner
+      this.state.currentPlayer = players.first
     }
   }
 }

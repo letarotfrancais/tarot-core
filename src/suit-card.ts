@@ -4,12 +4,13 @@ import FoolCard from './fool-card'
 import { SuitColor } from './types'
 
 export default class SuitCard extends Card {
-  color: SuitColor
+  color: SuitColor // TODO rename 'color' into 'suit'
   constructor(index: number, value: number, color: SuitColor, name: string) {
     super(index, value, name)
+    this.id = `${color}_${index}`
     this.color = color
   }
-  get sortCriteria() {
+  get sortCriteria() { // TODO delete if not used
     return `${super.sortCriteria}${this.color}${this.index}`
   }
   isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
