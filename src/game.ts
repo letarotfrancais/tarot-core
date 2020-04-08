@@ -123,7 +123,9 @@ export default class Game {
       this.state.currentPlayer = nextPlayer
     } else {
       let { bestCard } = this.state.board // TODO do not include in decorator
-      let { player: winner } = this.boardCardsPlayersMap.find(({ card }) => isEqual(card, bestCard))
+      let { player: winner } = this.boardCardsPlayersMap.find(({ card }) => {
+        return isEqual(card, bestCard)
+      })
       console.log('TRICK WINNER IS', winner.id);
 
       Card.transfer(board, winner.tricks, board.length)

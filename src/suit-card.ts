@@ -2,6 +2,8 @@ import Card from './card'
 import TrumpCard from './trump-card'
 import FoolCard from './fool-card'
 import { SuitColor } from './types'
+import Board from './board'
+import Hand from './hand'
 
 export default class SuitCard extends Card {
   color: SuitColor // TODO rename 'color' into 'suit'
@@ -13,34 +15,31 @@ export default class SuitCard extends Card {
   get sortCriteria() { // TODO delete if not used
     return `${super.sortCriteria}${this.color}${this.index}`
   }
-  isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
+  isPlayable(board: Board, hand: Hand): boolean {
     super.isPlayable(board, hand)
 
-    // if this is the first  card to be played
-    if (!board.length) {
+    if (!board.followSuitCard) {
       return true
     }
 
-    let [boardFirstCard] = board
-
-    // if the board color is the same as this card
-    if (boardFirstCard instanceof SuitCard && boardFirstCard.color === this.color) {
+    if (board.followSuitCard instanceof TrumpCard) {
+      if (hand.trumpCards.length) {
+        return false
+      }
       return true
     }
 
-    // if the first and only card played is the Fool card, this card will set the trick type and color
-    if (board.length === 1 && boardFirstCard instanceof FoolCard) {
+    if (board.followSuitCard instanceof SuitCard) {
+      if (this.color === board.followSuitCard.color) {
+        return true
+      }
+      if (hand.getSuitCards(board.followSuitCard.color).length) {
+        return false
+      }
+      if (hand.trumpCards.length) {
+        return false
+      }
       return true
     }
-
-    // if the hand has no card of the board color and no TrumpCard (pisser)
-    if (!hand.some(card => {
-          return card instanceof SuitCard  && boardFirstCard instanceof SuitCard && card.color === boardFirstCard.color
-        }) &&
-        !hand.some(card => card instanceof TrumpCard)) {
-      return true
-    }
-
-    return false
   }
 }

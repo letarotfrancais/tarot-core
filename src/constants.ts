@@ -16,7 +16,7 @@ export const FOOL_NAME = 'FOOL'
 
 // SUIT CARDS
 export const SUIT_CARD_FACE_FIRST_INDEX = 11
-export const SUIT_CARD_NAMES = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN','JACK', 'KNIGHT', 'QUEEN', 'KING']
+export const SUIT_CARD_NAMES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10','JACK', 'KNIGHT', 'QUEEN', 'KING']
 
 
 // VALUES

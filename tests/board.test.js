@@ -13,7 +13,7 @@ test('test if has trump card', async t => {
   let suitCard = new SuitCard(1, 1, 'HEART', '1')
   let trumpCard = new TrumpCard(1, 1)
   let board = new Board(suitCard, trumpCard)
-  t.truthy(board.hasTrumpCard)
+  t.true(board.hasTrumpCards)
 })
 
 test('best trump card', async t => {

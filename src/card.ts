@@ -1,4 +1,6 @@
 import { CardType } from './types'
+import Board from './board'
+import Hand from './hand'
 
 export default class Card {
   id: string
@@ -16,7 +18,7 @@ export default class Card {
   get sortCriteria() { // TODO delete if not used
     return `${this.type}`
   }
-  isPlayable(board: Array<Card>, hand: Array<Card>): boolean {
+  isPlayable(board: Board, hand: Hand): boolean {
     if (!hand.includes(this)) {
       throw new CardError('provided hand does not contain this card')
     }
